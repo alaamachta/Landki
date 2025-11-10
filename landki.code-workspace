@@ -1,0 +1,12 @@
+{
+  "folders": [
+    { "path": "website" },
+    { "path": "interview" }
+  ],
+  "settings": {
+    "files.exclude": {
+      "**/.git": true,
+      "**/node_modules": true
+    }
+  }
+}
