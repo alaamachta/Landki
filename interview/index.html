@@ -4,39 +4,50 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Interview – LandKI</title>
-  <meta name="color-scheme" content="dark light" />
   <style>
-    html,body{height:100%;margin:0;background:#0b0b0c}
-    #chat{height:100%;display:flex;align-items:stretch;justify-content:center}
+    html, body { height:100%; margin:0; background:#0b0b0c; }
+    #app { height:100%; }
   </style>
-  <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async></script>
+  <!-- Web Component von ChatKit per ESM laden (kein Bundler nötig) -->
+  <script type="module">
+    // ChatKit Web Component laden
+    import 'https://cdn.jsdelivr.net/npm/@openai/chatkit@latest/dist/web.js';
+
+    // ENV aus dem Server via <meta> übergeben (keine Secrets im Frontend!)
+    const WORKFLOW_ID = document.querySelector('meta[name="workflow-id"]').content;
+    const WORKFLOW_VER = document.querySelector('meta[name="workflow-version"]').content;
+    const DOMAIN_PK   = document.querySelector('meta[name="domain-pk"]').content;
+
+    // Element anlegen
+    const el = document.createElement('openai-chatkit');
+    el.style.height = '100%';
+
+    // Pflicht: Workflow + Version (leer lassen = production)
+    el.workflowId = WORKFLOW_ID;
+    el.version    = WORKFLOW_VER;    // z.B. "4" oder "" für production
+
+    // Token über Domain-PK (publishable) – keine API-Keys im Browser!
+    el.token = {
+      type: 'domain',
+      domainPk: DOMAIN_PK,
+      user: { id: 'guest', name: 'Gast' }
+    };
+
+    // (optional) UI-Starttext
+    el.welcome = { title: "Interview Assistent", message: "Frag mich alles über Alaa & LandKI." };
+
+    // Mounten
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('app').appendChild(el);
+    });
+  </script>
+
+  <!-- Diese drei Meta-Werte ersetzt der Server aus .env -->
+  <meta name="workflow-id" content="__WF_ID__">
+  <meta name="workflow-version" content="__WF_VER__">
+  <meta name="domain-pk" content="__DOMAIN_PK__">
 </head>
 <body>
-  <div id="chat"></div>
-  <script>
-    (async function init() {
-      function ready() {
-        return new Promise((r)=> {
-          if (window.ChatKit) return r();
-          const t = setInterval(()=>{ if (window.ChatKit){ clearInterval(t); r(); } }, 50);
-          setTimeout(()=>{ clearInterval(t); r(); }, 3000);
-        });
-      }
-      await ready();
-      if(!window.ChatKit){ console.error("ChatKit not loaded"); return; }
-
-      const el = document.getElementById("chat");
-      const ui = ChatKit.create({
-        element: el,
-        api: {
-          async getClientSecret(existing){
-            const res = await fetch("/interview/api/chatkit/session", { method: "POST" });
-            const data = await res.json();
-            return data.client_secret;
-          }
-        }
-      });
-    })();
-  </script>
+  <div id="app"></div>
 </body>
 </html>
