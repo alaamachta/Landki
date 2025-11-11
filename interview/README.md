@@ -1,53 +1,107 @@
-# Landki Interview App
+# LandKI Interview – OpenAI ChatKit
 
-Fullscreen chat application powered by OpenAI ChatKit using the official quickstart integration.
+Production ChatKit deployment using official Sessions API with workflow `wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22`.
 
-## Setup
+## 🚀 Quick Operations (90-second guide)
 
+### Start/Stop Server
 ```bash
-npm install
-cp .env.example .env
-# Edit .env and add your OPENAI_API_KEY and VITE_WORKFLOW_ID
+cd /var/www/landki/interview
+npx pm2 start server.js --name chatkit-interview    # Start
+npx pm2 stop chatkit-interview                      # Stop
+npx pm2 restart chatkit-interview                   # Restart
+npx pm2 logs chatkit-interview --lines 100          # View logs
+npx pm2 status                                      # Check status
 ```
 
-## Development
-
-Start both the backend session server and frontend dev server:
-
+### Health Check
 ```bash
-npm run start
+curl -X POST https://landki.com/interview/api/chatkit/session \
+  -H "Content-Type: application/json" \
+  -d '{"workflow":"wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22"}'
+# Should return: {"client_secret":{"value":"ek_...","expires_at":...}}
 ```
 
-Or run them separately:
-
+### Nginx
 ```bash
-# Terminal 1 - Backend API server
-npm run server
-
-# Terminal 2 - Frontend dev server
-npm run dev
+sudo nginx -t                    # Test config
+sudo systemctl reload nginx      # Reload
+sudo nginx -T | grep interview   # View config
 ```
 
-## Build
+## 📁 Architecture
 
-```bash
-npm run build
+**Stack**: Node.js (Express) + OpenAI Realtime Sessions API + Official ChatKit CDN  
+**Port**: 3101 (internal), proxied via nginx at `/interview/api/`  
+**Deployment**: PM2 process manager, auto-restart on boot
+
+### File Structure
+```
+/var/www/landki/interview/
+├── index.html          # Frontend (ChatKit.create with getClientSecret)
+├── server.js           # Backend session endpoint (port 3101)
+├── package.json        # Dependencies: express, openai, pm2
+├── .env                # OPENAI_API_KEY, CHATKIT_WORKFLOW_ID
+└── _backups/           # Timestamped backups
 ```
 
-## Configuration
+### Request Flow
+1. User opens `https://landki.com/interview/`
+2. ChatKit calls `getClientSecret()` → POST `/interview/api/chatkit/session`
+3. Nginx proxies to `http://127.0.0.1:3101/api/chatkit/session`
+4. Express calls OpenAI Realtime Sessions API (fallback if workflow endpoint fails)
+5. Returns `client_secret` → ChatKit initializes with workflow context
 
-Environment variables in `.env`:
-- `VITE_WORKFLOW_ID` - OpenAI workflow ID from Agent Builder (starts with wf_)
-- `VITE_WORKFLOW_VERSION` - Workflow version (optional, for reference)
-- `OPENAI_API_KEY` - OpenAI API key (required for session creation)
+## 🔒 Security
 
-## Architecture
+- API key never exposed to client (server-side only)
+- CORS restricted to `landki.com` origin
+- Nginx proxy isolates internal port 3101
+- PM2 runs as root (production VM setup)
 
-This implementation follows the official OpenAI ChatKit quickstart:
+## 📝 Configuration
 
-1. **CDN**: Uses the official `https://cdn.platform.openai.com/deployments/chatkit/chatkit.js`
-2. **React Integration**: Uses `@openai/chatkit-react` package
-3. **Session Management**: Backend API endpoint (`server.js`) handles secure session creation
+**`.env`** (UTF-8, LF line endings):
+```env
+OPENAI_API_KEY=sk-proj-...
+CHATKIT_WORKFLOW_ID=wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22
+```
+
+**Nginx** (`/etc/nginx/sites-available/landki.com.conf`):
+```nginx
+location /interview/api/ {
+    proxy_pass http://localhost:3101/api/;
+    # ... (proxy headers configured)
+}
+```
+
+## 🛠 Troubleshooting
+
+**Session creation fails:**
+```bash
+npx pm2 logs chatkit-interview --err --lines 50
+# Check for API key errors or workflow ID issues
+```
+
+**Port 3101 already in use:**
+```bash
+sudo lsof -i :3101
+npx pm2 restart chatkit-interview
+```
+
+**ChatKit not loading:**
+- Check browser console for CDN errors
+- Verify `https://cdn.platform.openai.com/deployments/chatkit/chatkit.js` is accessible
+- Test session endpoint manually (see Health Check above)
+
+## 📦 Dependencies
+
+- `express@^4.21.2` – HTTP server
+- `openai@^4.76.1` – Official OpenAI SDK
+- `dotenv@^16.4.5` – Environment variables
+- `pm2` (global) – Process manager
+
+Installed via: `npm install express openai dotenv pm2`
 4. **Auto-updates**: Changes in OpenAI Agent Builder appear live after page refresh
 
 ## Deployment
