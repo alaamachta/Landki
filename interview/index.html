@@ -9,32 +9,34 @@
     html,body{height:100%;margin:0;background:#0b0b0c}
     #chat{height:100%;display:flex;align-items:stretch;justify-content:center}
   </style>
-  <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script>
+  <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async></script>
 </head>
 <body>
   <div id="chat"></div>
   <script>
-    async function getClientSecret() {
-      const res = await fetch('/interview/api/chatkit/session', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ workflow: 'wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22' })
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        console.error('Session error:', err);
-        throw new Error('Failed to create session');
+    (async function init() {
+      function ready() {
+        return new Promise((r)=> {
+          if (window.ChatKit) return r();
+          const t = setInterval(()=>{ if (window.ChatKit){ clearInterval(t); r(); } }, 50);
+          setTimeout(()=>{ clearInterval(t); r(); }, 3000);
+        });
       }
-      const data = await res.json();
-      return data.client_secret;
-    }
+      await ready();
+      if(!window.ChatKit){ console.error("ChatKit not loaded"); return; }
 
-    ChatKit.create({
-      container: document.getElementById('chat'),
-      getClientSecret,
-      locale: 'de-DE',
-      showCitations: true
-    });
+      const el = document.getElementById("chat");
+      const ui = ChatKit.create({
+        element: el,
+        api: {
+          async getClientSecret(existing){
+            const res = await fetch("/interview/api/chatkit/session", { method: "POST" });
+            const data = await res.json();
+            return data.client_secret;
+          }
+        }
+      });
+    })();
   </script>
 </body>
 </html>
