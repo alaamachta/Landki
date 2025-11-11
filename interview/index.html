@@ -1,30 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Landki Interview</title>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
-  <base href="/interview/">
-  <style>html,body,#root{height:100%;margin:0;background:#0b0b0c;color:#fff;font-family:system-ui}</style>
-  <!-- Official ChatKit CDN (versionless - deployments path) -->
-  <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" defer></script>
-</head>
-<body>
-  <div id="root"></div>
-  <script>
-    // Direct ChatKit mount - auto-updates from Agent Builder after page refresh
-    // OMIT version parameter to always use Production (enables automatic updates)
-    window.addEventListener('load', () => {
-      if (window.ChatKit) {
-        ChatKit.mount({
-          element: document.getElementById('root'),
-          workflow: 'wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22'
-        });
-      } else {
-        console.error('ChatKit not loaded from CDN');
-      }
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Landki Interview Assistant</title>
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      html,body,#root{height:100%;margin:0;background:#0b0b0c;color:#fff;font-family:system-ui}
+    </style>
+    <!-- Primary CDN -->
+    <script id="chatkit-cdn" src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"></script>
+    <script>
+      // Fallback if the primary CDN fails to define window.ChatKit
+      window.addEventListener("load", () => {
+        const mount = () => {
+          if (window.ChatKit) {
+            window.ChatKit.mount({
+              element: document.getElementById("root"),
+              workflow: "wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22"
+              // no version -> uses Production automatically
+            });
+            return true;
+          }
+          return false;
+        };
+
+        // Try immediately (primary CDN)
+        if (mount()) return;
+
+        // If not loaded, dynamically try a fallback CDN URL once
+        const s = document.createElement("script");
+        s.src = "https://cdn.openai.com/chatkit/chatkit.js";
+        s.onload = () => mount() || console.error("ChatKit failed after fallback.");
+        s.onerror = () => console.error("ChatKit fallback CDN load error.");
+        document.head.appendChild(s);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
 </html>
