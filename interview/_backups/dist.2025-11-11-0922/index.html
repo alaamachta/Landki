@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Interview Assistent – LandKI</title>
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      html,body,#root{height:100%;margin:0;background:#0b0b0c;color:#fff;font-family:system-ui}
+    </style>
+    <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" defer></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      async function boot() {
+        try {
+          // 1) Server-seitig Client-Token holen
+          const res = await fetch("/interview/api/chatkit/session", { method: "POST" });
+          if (!res.ok) {
+            console.error("Token fetch failed:", res.status, await res.text());
+            return;
+          }
+          const { client_secret } = await res.json();
+          if (!client_secret) {
+            console.error("No client_secret in response");
+            return;
+          }
+
+          // 2) ChatKit korrekt initialisieren: clientSecret + workflowId + element
+          const chat = await ChatKit.create({
+            element: document.getElementById("root"),
+            clientSecret: client_secret,
+            workflowId: "wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22"
+          });
+
+          // optional: Theme/Locale etc.
+          // await chat.setOptions({ theme: { colorScheme: "dark" }, locale: "de-DE" });
+        } catch (err) {
+          console.error("ChatKit boot error:", err);
+        }
+      }
+
+      // warten bis SDK geladen ist
+      window.addEventListener("load", () => {
+        if (window.ChatKit && ChatKit.create) return void boot();
+        let tries = 0;
+        const iv = setInterval(() => {
+          if (window.ChatKit && ChatKit.create) { clearInterval(iv); boot(); }
+          if (++tries > 40) { clearInterval(iv); console.error("ChatKit SDK not ready"); }
+        }, 250);
+      });
+    </script>
+  </body>
+</html>
