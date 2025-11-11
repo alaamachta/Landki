@@ -6,7 +6,7 @@
   <title>Landki Interview</title>
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <base href="/interview/">
-  <style>html,body,#root{height:100%;margin:0;background:#0b0b0c}</style>
+  <style>html,body,#root{height:100%;margin:0;background:#0b0b0c;color:#fff;font-family:system-ui}</style>
   <!-- Official ChatKit CDN (versionless - deployments path) -->
   <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" defer></script>
 </head>
@@ -14,12 +14,16 @@
   <div id="root"></div>
   <script>
     // Direct ChatKit mount - auto-updates from Agent Builder after page refresh
-    document.addEventListener('DOMContentLoaded', () => {
-      ChatKit.mount({
-        element: document.getElementById('root'),
-        workflow: 'wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22',
-        version: '2',
-      });
+    // OMIT version parameter to always use Production (enables automatic updates)
+    window.addEventListener('load', () => {
+      if (window.ChatKit) {
+        ChatKit.mount({
+          element: document.getElementById('root'),
+          workflow: 'wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22'
+        });
+      } else {
+        console.error('ChatKit not loaded from CDN');
+      }
     });
   </script>
 </body>

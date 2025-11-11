@@ -36,14 +36,24 @@ systemctl reload nginx
 3. Check for errors (should see no 404s or console errors)
 4. Test the chat interface
 
-### Verify Auto-Updates
+### Verify Auto-Updates (Production Mode)
 
 1. Make changes in [OpenAI Agent Builder](https://platform.openai.com/agent-builder)
    - Update prompts
    - Modify starter buttons
    - Change UI settings
-2. **Hard refresh** https://landki.com/interview/ (Ctrl+Shift+R / Cmd+Shift+R)
-3. Changes should appear immediately (no rebuild needed)
+2. **Publish to Production** in Agent Builder
+3. **Hard refresh** https://landki.com/interview/ (Ctrl+Shift+R / Cmd+Shift+R)
+4. Changes should appear immediately (no rebuild needed)
+
+**Note:** Version parameter is OMITTED in the ChatKit mount call to automatically use the Production version. This enables automatic updates from Agent Builder without code changes.
+
+### Known Fixed Issues (Nov 11, 2025)
+
+- ✅ **ChatKit race condition**: Switched from `DOMContentLoaded` to `window.load` event with null check
+- ✅ **Version parameter removed**: Omitting version enables automatic Production updates
+- ✅ **Favicon 404**: Served from website root (`/favicon.ico`)
+- ✅ **Trailing slash redirect**: `/interview` → `/interview/` (301)
 
 ## Architecture
 
@@ -62,7 +72,8 @@ OpenAI Agent Builder Workflow (wf_...)
 **Key Features:**
 - ✅ No backend API required (direct CDN mount)
 - ✅ No React wrapper dependencies
-- ✅ Auto-updates from Agent Builder via versionless CDN
+- ✅ Auto-updates from Agent Builder via versionless mount (Production)
+- ✅ Load-safe mounting with null check (avoids race conditions)
 - ✅ Trailing-slash redirect: `/interview` → `/interview/`
 - ✅ Favicon served from website root
 
