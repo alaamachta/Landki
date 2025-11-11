@@ -19,7 +19,6 @@ router.post('/', async (req: Request, res: Response) => {
   res.flushHeaders();
 
   let tokenCount = 0;
-  let hasKnowledgeGap = false;
 
   try {
     await streamChatCompletion({
@@ -30,18 +29,10 @@ router.post('/', async (req: Request, res: Response) => {
         tokenCount++;
         res.write(`data: ${JSON.stringify({ content: token })}\n\n`);
       },
-      onComplete: (suggestions: string[], knowledgeGap: boolean) => {
-        hasKnowledgeGap = knowledgeGap;
-        
+      onComplete: (suggestions: string[]) => {
         if (suggestions.length > 0) {
           res.write(`data: ${JSON.stringify({ suggestions })}\n\n`);
         }
-        
-        // Send knowledge gap flag to trigger feedback modal on client
-        if (hasKnowledgeGap) {
-          res.write(`data: ${JSON.stringify({ hasKnowledgeGap: true })}\n\n`);
-        }
-        
         res.write('data: [DONE]\n\n');
         res.end();
 

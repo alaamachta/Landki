@@ -44,7 +44,6 @@ export const App: React.FC = () => {
 
     let assistantContent = '';
     let suggestions: string[] = [];
-    let noKnowledgeFound = false;
 
     try {
       await apiService.streamChat(
@@ -57,13 +56,6 @@ export const App: React.FC = () => {
         (chunk: string) => {
           assistantContent += chunk;
           setStreamingContent(assistantContent);
-          
-          // Check for knowledge gap indicators
-          if (assistantContent.toLowerCase().includes('leider') || 
-              assistantContent.toLowerCase().includes('keine information') ||
-              assistantContent.toLowerCase().includes('nicht beantworten')) {
-            noKnowledgeFound = true;
-          }
         },
         // onSuggestions
         (newSuggestions: string[]) => {
@@ -76,7 +68,7 @@ export const App: React.FC = () => {
           setIsStreaming(false);
         },
         // onComplete
-        () => {
+        (hasKnowledgeGap?: boolean) => {
           const assistantMessage: Message = {
             id: `msg_${Date.now()}_assistant`,
             role: 'assistant',
@@ -91,8 +83,8 @@ export const App: React.FC = () => {
           setIsStreaming(false);
           setIsLoading(false);
 
-          // If no knowledge found, open feedback modal after a short delay
-          if (noKnowledgeFound) {
+          // If knowledge gap detected, open feedback modal after a short delay
+          if (hasKnowledgeGap) {
             setTimeout(() => {
               setIsFeedbackOpen(true);
             }, 1000);

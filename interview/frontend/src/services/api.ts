@@ -27,7 +27,7 @@ export class ApiService {
     onMessage: (content: string) => void,
     onSuggestions: (suggestions: string[]) => void,
     onError: (error: Error) => void,
-    onComplete: () => void
+    onComplete: (hasKnowledgeGap?: boolean) => void
   ): Promise<void> {
     try {
       const response = await fetch(`${this.baseUrl}/chat`, {
@@ -50,6 +50,7 @@ export class ApiService {
       }
 
       let buffer = '';
+      let hasKnowledgeGap = false;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -64,7 +65,7 @@ export class ApiService {
             const data = line.slice(6).trim();
             
             if (data === '[DONE]') {
-              onComplete();
+              onComplete(hasKnowledgeGap);
               return;
             }
 
@@ -77,6 +78,10 @@ export class ApiService {
               
               if (parsed.suggestions && Array.isArray(parsed.suggestions)) {
                 onSuggestions(parsed.suggestions);
+              }
+              
+              if (parsed.hasKnowledgeGap) {
+                hasKnowledgeGap = true;
               }
               
               if (parsed.error) {
