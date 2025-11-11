@@ -1,0 +1,19 @@
+2025-11-11 16:52:40 +01:00: {"timestamp":"2025-11-11T15:52:40.103Z","level":"INFO","message":"Interview API server running on http://127.0.0.1:3001","version":"1.0.0","nodeVersion":"v24.11.0","env":"production"}
+2025-11-11 16:52:47 +01:00: {"timestamp":"2025-11-11T15:52:47.594Z","level":"INFO","message":"GET /health","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:52:51 +01:00: {"timestamp":"2025-11-11T15:52:51.969Z","level":"INFO","message":"GET /api/health","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:53:05 +01:00: {"timestamp":"2025-11-11T15:53:05.922Z","level":"INFO","message":"SIGINT received, shutting down gracefully"}
+2025-11-11 16:53:06 +01:00: {"timestamp":"2025-11-11T15:53:06.361Z","level":"INFO","message":"Interview API server running on http://127.0.0.1:3001","version":"1.0.0","nodeVersion":"v24.11.0","env":"production"}
+2025-11-11 16:53:11 +01:00: {"timestamp":"2025-11-11T15:53:11.772Z","level":"INFO","message":"GET /api/health","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:53:16 +01:00: {"timestamp":"2025-11-11T15:53:16.122Z","level":"INFO","message":"GET /api/health","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:53:30 +01:00: {"timestamp":"2025-11-11T15:53:30.439Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:53:39 +01:00: {"timestamp":"2025-11-11T15:53:39.852Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:53:59 +01:00: {"timestamp":"2025-11-11T15:53:59.304Z","level":"INFO","message":"SIGINT received, shutting down gracefully"}
+2025-11-11 16:53:59 +01:00: {"timestamp":"2025-11-11T15:53:59.623Z","level":"INFO","message":"Interview API server running on http://127.0.0.1:3001","version":"1.0.0","nodeVersion":"v24.11.0","env":"production"}
+2025-11-11 16:54:10 +01:00: {"timestamp":"2025-11-11T15:54:10.581Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:54:32 +01:00: {"timestamp":"2025-11-11T15:54:32.383Z","level":"INFO","message":"POST /api/feedback","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:54:32 +01:00: {"timestamp":"2025-11-11T15:54:32.385Z","level":"INFO","message":"Feedback logged","name":"Test User"}
+2025-11-11 16:56:49 +01:00: {"timestamp":"2025-11-11T15:56:49.644Z","level":"INFO","message":"GET /api/health","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:56:49 +01:00: {"timestamp":"2025-11-11T15:56:49.716Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"curl/7.81.0"}
+2025-11-11 16:58:24 +01:00: {"timestamp":"2025-11-11T15:58:24.697Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"}
+2025-11-11 16:58:44 +01:00: {"timestamp":"2025-11-11T15:58:44.825Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"}
+2025-11-11 16:59:32 +01:00: {"timestamp":"2025-11-11T15:59:32.724Z","level":"INFO","message":"POST /api/chat","ip":"127.0.0.1","userAgent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36 Edg/142.0.0.0"}

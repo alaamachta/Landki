@@ -9,9 +9,9 @@
   </style>
 
   <!-- Workflow/Version/Domain-PK kommen als <meta> und werden serverseitig ersetzt -->
-  <meta name="workflow-id" content="wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22">
-  <meta name="workflow-version" content=""><!-- leer = production -->
-  <meta name="domain-pk" content="domain_pk_6910be7fce7c8190b4ec77ddca96cb6e06e192aa861800b7">
+  <meta name="workflow-id" content="__WF_ID__">
+  <meta name="workflow-version" content="__WF_VER__"><!-- leer = production -->
+  <meta name="domain-pk" content="__DOMAIN_PK__">
 
   <script>
     // Loader mit Fallbacks: probiert mehrere offizielle/öffentliche Pfade durch
