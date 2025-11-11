@@ -1,33 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Landki Interview</title>
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-      html, body, #root {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-          sans-serif;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        background: #0f0f0f;
-        color: #ffffff;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Landki Interview</title>
+  <base href="/interview/">
+  <style>html,body,#root{height:100%;margin:0;background:#0b0b0c}</style>
+  <!-- Official ChatKit CDN (fires window.ChatKit + chatkit:ready) -->
+  <script src="https://cdn.openai.com/chatkit/v1/chatkit.js" defer onload="dispatchEvent(new Event('chatkit:ready'))"></script>
+  <!-- Vite injects built assets below automatically -->
+  <script type="module" src="/src/main.jsx"></script>
+</head>
+<body>
+  <div id="root"></div>
+</body>
 </html>
