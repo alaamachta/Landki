@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interview – LandKI</title>
+  <style>
+    html,body,#app{height:100%;margin:0;background:#0b0b0c;color:#eaeaea;font-family:system-ui}
+  </style>
+
+  <!-- Workflow/Version/Domain-PK kommen als <meta> und werden serverseitig ersetzt -->
+  <meta name="workflow-id" content="wf_6910af26c670819097b24c11ebbe0b380a5bfa9945431f22">
+  <meta name="workflow-version" content=""><!-- leer = production -->
+  <meta name="domain-pk" content="domain_pk_6910be7fce7c8190b4ec77ddca96cb6e06e192aa861800b7">
+
+  <script>
+    // Loader mit Fallbacks: probiert mehrere offizielle/öffentliche Pfade durch
+    const cdnCandidates = [
+      // Offizielles OpenAI CDN (neuer Pfad)
+      "https://cdn.openai.com/chatkit/chatkit.js",
+      // Plattform CDN (älterer Pfad, bei manchen Accounts aktiv)
+      "https://cdn.platform.openai.com/deployments/chatkit/chatkit.js",
+      // NPM-CDNs (Dateiname kann web.js oder web.min.js heißen)
+      "https://unpkg.com/@openai/chatkit/dist/web.js",
+      "https://unpkg.com/@openai/chatkit/dist/web.min.js",
+      "https://cdn.jsdelivr.net/npm/@openai/chatkit/dist/web.js",
+      "https://cdn.jsdelivr.net/npm/@openai/chatkit/dist/web.min.js"
+    ];
+
+    function loadScript(src){
+      return new Promise((resolve,reject)=>{
+        const s=document.createElement('script');
+        s.src=src; s.async=true;
+        s.onload=()=>resolve(src);
+        s.onerror=()=>reject(new Error("load failed: "+src));
+        document.head.appendChild(s);
+      });
+    }
+
+    async function ensureChatKit(){
+      let lastErr;
+      for(const url of cdnCandidates){
+        try {
+          await loadScript(url);
+          if (window.ChatKit || customElements.get('openai-chatkit')) return url;
+        } catch(e){ lastErr = e; }
+      }
+      console.error("ChatKit konnte nicht geladen werden.", lastErr);
+      throw lastErr || new Error("ChatKit not loaded");
+    }
+
+    async function boot(){
+      try {
+        const usedCdn = await ensureChatKit();
+        console.log("ChatKit loaded from:", usedCdn);
+
+        const WF_ID  = document.querySelector('meta[name="workflow-id"]').content;
+        const WF_VER = document.querySelector('meta[name="workflow-version"]').content; // "" = production
+        const DOMAIN_PK = document.querySelector('meta[name="domain-pk"]').content;
+
+        // 1) Web-Component vorhanden?
+        if (customElements.get('openai-chatkit')) {
+          const el = document.createElement('openai-chatkit');
+          el.style.height = '100%';
+          el.workflowId = WF_ID;
+          if (WF_VER) el.version = WF_VER; // leer => production
+          el.token = { type:'domain', domainPk: DOMAIN_PK, user:{ id:'guest', name:'Gast' } };
+          el.welcome = { title: "Interview Assistent", message: "Frag mich alles über Alaa & LandKI." };
+          document.getElementById('app').appendChild(el);
+          return;
+        }
+
+        // 2) Fallback: Globales API vorhanden?
+        if (window.ChatKit && typeof window.ChatKit.create === 'function') {
+          const container = document.getElementById('app');
+          window.ChatKit.create({
+            element: container,
+            workflowId: WF_ID,
+            version: WF_VER || undefined, // undefined => production
+            token: { type:'domain', domainPk: DOMAIN_PK, user:{ id:'guest', name:'Gast' } },
+            ui: { title: "Interview Assistent" }
+          });
+          return;
+        }
+
+        throw new Error("Kein ChatKit-Renderer gefunden");
+      } catch(e){
+        console.error("Boot error:", e);
+        const app=document.getElementById('app');
+        app.innerHTML = "<div style='padding:16px;color:#f66'>Chat konnte nicht geladen werden. Bitte später erneut versuchen.</div>";
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', boot);
+  </script>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+</html>
