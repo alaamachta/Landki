@@ -1,22 +1,40 @@
-
-import { useEffect } from 'react'
+import { ChatKit, useChatKit } from '@openai/chatkit-react'
 
 export default function App() {
-  useEffect(() => {
-    const el = document.getElementById('root')
-    // Prefer CDN script already included in index.html; fallback guard:
-    const mount = () => {
-      if (window.ChatKit && el) {
-        window.ChatKit.mount({
-          element: el,
-          workflow: import.meta.env.VITE_WORKFLOW_ID,
-          version: import.meta.env.VITE_WORKFLOW_VERSION,
+  const { control } = useChatKit({
+    api: {
+      async getClientSecret(existing) {
+        // For production, implement session refresh
+        if (existing) {
+          return existing
+        }
+
+        // Create a new session via our backend API
+        // In production, the path includes /interview/ prefix due to base href
+        const apiPath = import.meta.env.MODE === 'production' 
+          ? '/interview/api/chatkit/session'
+          : '/api/chatkit/session'
+        
+        const response = await fetch(apiPath, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
         })
-      }
-    }
-    if (window.ChatKit) mount()
-    else window.addEventListener('chatkit:ready', mount, { once: true })
-    return () => {}
-  }, [])
-  return null
+
+        if (!response.ok) {
+          throw new Error(`Failed to create session: ${response.statusText}`)
+        }
+
+        const { client_secret } = await response.json()
+        return client_secret
+      },
+    },
+  })
+
+  return (
+    <div style={{ height: '100vh', width: '100vw' }}>
+      <ChatKit control={control} className="h-full w-full" />
+    </div>
+  )
 }
