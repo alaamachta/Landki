@@ -72,14 +72,54 @@ export default function App() {
   // ❗️Nur erlaubte Keys im Hook verwenden
   const chatkit = useChatKit({
     api: { getClientSecret },
-    startScreen: {
-      greeting: GREETING,
-      prompts: STARTER_PROMPTS.map(p => ({ label: p.label || p.prompt, prompt: p.prompt })),
+    
+    // 🎨 Theme Configuration (from ChatKit.ts)
+    theme: {
+      colorScheme: 'dark',
+      radius: 'round',
+      density: 'normal',
+      color: {
+        grayscale: {
+          hue: 234,
+          tint: 4,
+          shade: -3
+        }
+      },
+      typography: {
+        baseSize: 16,
+        fontFamily: '"OpenAI Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+      }
     },
+    
+    // 📝 Composer (Input Field)
     composer: {
-      placeholder: PLACEHOLDER,
-      attachments: { enabled: false },
+      placeholder: 'Frag mich alles rund um Alaa, seine Projekte oder KI!',
+      attachments: {
+        enabled: true,
+        maxCount: 5,
+        maxSize: 10485760
+      },
     },
+    
+    // 🚀 Start Screen
+    startScreen: {
+      greeting: '👋 Willkommen beim Interview Assistent von Alaa Mashta!',
+      prompts: [
+        {
+          label: 'Erzählen Sie mir kurz über sich.',
+          prompt: 'Erzählen Sie mir kurz über sich.'
+        },
+        {
+          label: 'Welche Ihrer Erfahrungen ist für KI-Integration besonders relevant?',
+          prompt: 'Welche Ihrer Erfahrungen ist für KI-Integration besonders relevant?'
+        },
+        {
+          label: 'Wie erklären Sie Ihr Projekt LandKI?',
+          prompt: 'Wie erklären Sie Ihr Projekt LandKI?'
+        }
+      ],
+    },
+    
     onResponseEnd: () => {},
     onResponseStart: () => {},
     onThreadChange: () => {},

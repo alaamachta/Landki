@@ -223,7 +223,7 @@ async def chatkit_session():
         user_id = str(uuid.uuid4())
         
         payload = {
-            "workflow": {"id": workflow_id},
+            "workflow": {"id": workflow_id},  # Use latest/default version
             "user": user_id,
             "chatkit_configuration": {
                 "file_upload": {
