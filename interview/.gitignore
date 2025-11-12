@@ -29,21 +29,17 @@ __pycache__/
 # -------------------------------
 _backup*/
 _logs*/
-_unused*/
 _backups/
-_logs/
-_unused/
 
 # -------------------------------
-# 🖥️ Project-specific folders
+# 🚫 Private Interview Folders
 # -------------------------------
-/var/www/landki/website/
-/var/www/landki/interview/__pycache__/
-/var/www/landki/interview/_backups/
-/var/www/landki/interview/_logs/
-/var/www/landki/interview/_unused/
-/var/www/landki/interview/dashboard/
-/var/www/landki/interview/Docs/
+/Docs/
+/__pycache__/
+/_logs/
+/_unused/
+/dashboard/
+
 
 # -------------------------------
 # 🧰 System files
