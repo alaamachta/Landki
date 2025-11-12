@@ -1,0 +1,100 @@
+/* Dark theme + animated gradient background */
+body {
+  margin: 0;
+  background: radial-gradient(1200px 800px at 10% 10%, rgba(118,75,162,0.25), transparent),
+              radial-gradient(1200px 800px at 90% 20%, rgba(102,126,234,0.20), transparent),
+              linear-gradient(160deg,#0b132b,#1c2541 55%,#0b132b);
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: #e2e8f0;
+  animation: bgFloat 22s ease-in-out infinite alternate;
+}
+
+@keyframes bgFloat {
+  from { background-position: 0 0,0 0,0 0; }
+  to { background-position: 6% -4%, -6% 5%, 0 0; }
+}
+
+.app-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 26px 26px 40px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.app-header h1 {
+  margin-bottom: 10px;
+  font-size: 2.3rem;
+  background: linear-gradient(135deg,#f8fafc 0%,#94a3b8 55%,#f8fafc 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: .5px;
+}
+
+.app-header p {
+  color: #94a3b8;
+  font-size: 1.05rem;
+}
+
+.chat-wrapper {
+  width: 100%;
+  min-height: 640px;
+  height: 72vh;
+  max-height: 860px;
+  position: relative;
+  backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 22px;
+  box-shadow: 0 18px 60px -10px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
+  overflow: hidden;
+  animation: fadeInUp .9s cubic-bezier(.16,.7,.3,1.02);
+}
+
+@keyframes fadeInUp {
+  from { opacity:0; transform: translateY(40px) scale(.96); }
+  to { opacity:1; transform: translateY(0) scale(1); }
+}
+
+.chat-wrapper > * {
+  height: 100%;
+  width: 100%;
+}
+
+.opacity-0 {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.opacity-100 {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+.error-message {
+  background: rgba(220,38,38,.10);
+  border: 1px solid rgba(220,38,38,.45);
+  color: #fca5a5;
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  border-radius: 12px;
+  font-size: .92rem;
+  backdrop-filter: blur(4px);
+}
+
+/* Loader overlay styling (inherits dark theme) */
+.loader-overlay strong { color:#f1f5f9; }
+.loader-overlay { font-weight:500; }
+
+@media (max-width: 900px) {
+  .app-container { padding: 18px 18px 32px; }
+  .chat-wrapper { min-height: 560px; height: 70vh; }
+  .app-header h1 { font-size: 1.9rem; }
+}

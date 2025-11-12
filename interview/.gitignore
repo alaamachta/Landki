@@ -2,3 +2,5 @@ node_modules/
 dist/
 .env*
 !.env.example
+server.py.backup
+Interview Assistent.txt
