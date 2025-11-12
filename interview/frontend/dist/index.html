@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="de" data-theme="dark" style="color-scheme: dark;">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/interview/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interview Assistent - Landki</title>
+    <!-- ChatKit script (session-based auth, no domain verification needed) -->
+    <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async></script>
+    <style>
+      /* Force dark theme on ChatKit */
+      openai-chatkit { 
+        color-scheme: dark;
+        --chatkit-theme: dark;
+      }
+      openai-chatkit::part(container) {
+        background: #0f172a !important;
+        color: #e2e8f0 !important;
+      }
+    </style>
+    <script type="module" crossorigin src="/interview/assets/index-DQ5YhgW5.js"></script>
+    <link rel="stylesheet" crossorigin href="/interview/assets/index-DteQAAVN.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
