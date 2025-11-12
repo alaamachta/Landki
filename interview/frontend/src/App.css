@@ -1,21 +1,27 @@
-/* Dark theme + animated gradient background */
-body {
+/* /var/www/landki/interview/frontend/src/App.css */
+
+/* Global Dark + animated LandKI-Gradient */
+:root { color-scheme: dark; }
+html, body {
   margin: 0;
-  background: radial-gradient(1200px 800px at 10% 10%, rgba(118,75,162,0.25), transparent),
-              radial-gradient(1200px 800px at 90% 20%, rgba(102,126,234,0.20), transparent),
-              linear-gradient(160deg,#0b132b,#1c2541 55%,#0b132b);
+  height: 100%;
+  background:
+    radial-gradient(1200px 800px at 10% 10%, rgba(118,75,162,0.25), transparent),
+    radial-gradient(1200px 800px at 90% 20%, rgba(102,126,234,0.20), transparent),
+    linear-gradient(160deg,#0b132b,#1c2541 55%,#0b132b);
   background-attachment: fixed;
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   color: #e2e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+               Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
   animation: bgFloat 22s ease-in-out infinite alternate;
 }
 
 @keyframes bgFloat {
-  from { background-position: 0 0,0 0,0 0; }
-  to { background-position: 6% -4%, -6% 5%, 0 0; }
+  from { background-position: 0 0, 0 0, 0 0; }
+  to   { background-position: 6% -4%, -6% 5%, 0 0; }
 }
 
+/* Layout */
 .app-container {
   width: 100%;
   max-width: 1100px;
@@ -27,9 +33,8 @@ body {
   text-align: center;
   margin-bottom: 30px;
 }
-
 .app-header h1 {
-  margin-bottom: 10px;
+  margin: 0 0 10px 0;
   font-size: 2.3rem;
   background: linear-gradient(135deg,#f8fafc 0%,#94a3b8 55%,#f8fafc 100%);
   background-clip: text;
@@ -37,47 +42,63 @@ body {
   -webkit-text-fill-color: transparent;
   letter-spacing: .5px;
 }
-
 .app-header p {
+  margin: 0;
   color: #94a3b8;
   font-size: 1.05rem;
 }
 
+/* Chat card */
 .chat-wrapper {
   width: 100%;
   min-height: 640px;
   height: 72vh;
   max-height: 860px;
   position: relative;
+
+  /* Dark glass */
   backdrop-filter: blur(18px);
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(8, 10, 18, 0.55);
+  border: 1px solid rgba(255,255,255,0.08);
   border-radius: 22px;
-  box-shadow: 0 18px 60px -10px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.35);
+
+  box-shadow:
+    0 18px 60px -10px rgba(0,0,0,0.55),
+    0 4px 12px rgba(0,0,0,0.35);
   overflow: hidden;
+
   animation: fadeInUp .9s cubic-bezier(.16,.7,.3,1.02);
 }
-
 @keyframes fadeInUp {
   from { opacity:0; transform: translateY(40px) scale(.96); }
-  to { opacity:1; transform: translateY(0) scale(1); }
+  to   { opacity:1; transform: translateY(0)   scale(1); }
 }
-
 .chat-wrapper > * {
   height: 100%;
   width: 100%;
 }
 
-.opacity-0 {
-  opacity: 0;
-  pointer-events: none;
+/* Init overlay (dark, nicht weiß) */
+.loading-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10,12,18,0.75);
+  color: #e8eaf6;
+  font-size: 1rem;
+  border-radius: 18px;
+  backdrop-filter: blur(2px);
+}
+.loading-hint {
+  margin-top: 8px;
+  font-size: .85rem;
+  color: #c7cbe6;
 }
 
-.opacity-100 {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
+/* Error */
 .error-message {
   background: rgba(220,38,38,.10);
   border: 1px solid rgba(220,38,38,.45);
@@ -89,12 +110,82 @@ body {
   backdrop-filter: blur(4px);
 }
 
-/* Loader overlay styling (inherits dark theme) */
-.loader-overlay strong { color:#f1f5f9; }
-.loader-overlay { font-weight:500; }
+/* Feedback button */
+.feedback-wrap {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.feedback-btn {
+  background: linear-gradient(135deg,#ef4444,#dc2626);
+  border: none;
+  color: #fff;
+  padding: 12px 18px;
+  font-size: .85rem;
+  font-weight: 600;
+  letter-spacing: .5px;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 0 6px 20px -5px rgba(0,0,0,.5);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
 
+/* Fade helpers */
+.opacity-0   { opacity: 0;   pointer-events: none; }
+.opacity-100 { opacity: 1;   transition: opacity .3s ease; }
+
+/* 🌙 ChatKit Dark Theme Override (iframe + shadow-DOM) */
+openai-chatkit,
+openai-chatkit *,
+.ck-iframe,
+#chatkit-container {
+  color-scheme: dark !important;
+}
+
+/* Inject dark variables for ChatKit */
+:root {
+  --ck-color-background: #0b1120;
+  --ck-color-surface: #0f172a;
+  --ck-color-surface-overlay: #1e293b;
+  --ck-color-text: #e2e8f0;
+  --ck-color-text-secondary: #94a3b8;
+  --ck-color-border: #334155;
+  --ck-color-primary: #667eea;
+  --ck-color-primary-hover: #5568d3;
+}
+
+/* Force dark on iframe content if accessible */
+openai-chatkit iframe,
+.ck-iframe {
+  background: #0f172a !important;
+  color-scheme: dark !important;
+}
+
+/* Attempt to override ChatKit internal styles via attribute selectors */
+openai-chatkit[theme="dark"],
+openai-chatkit[data-theme="dark"],
+openai-chatkit[data-color-scheme="dark"] {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+/* Target any nested elements that might have white backgrounds */
+openai-chatkit * {
+  background-color: transparent !important;
+}
+openai-chatkit div[class*="container"],
+openai-chatkit div[class*="wrapper"],
+openai-chatkit div[class*="panel"] {
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+
+/* Responsive */
 @media (max-width: 900px) {
   .app-container { padding: 18px 18px 32px; }
-  .chat-wrapper { min-height: 560px; height: 70vh; }
+  .chat-wrapper  { min-height: 560px; height: 70vh; }
   .app-header h1 { font-size: 1.9rem; }
 }

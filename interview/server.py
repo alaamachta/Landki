@@ -214,6 +214,10 @@ async def chatkit_session():
             "OpenAI-Beta": "chatkit_beta=v1",
         }
         
+        # Add domain public key to headers if available
+        if DOMAIN_PUBLIC_KEY:
+            headers["OpenAI-Domain-Public-Key"] = DOMAIN_PUBLIC_KEY
+        
         # Generate a user ID (in production, this should be a real user ID)
         import uuid
         user_id = str(uuid.uuid4())

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="de" data-theme="dark" style="color-scheme: dark;">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%vite.svg" />
@@ -7,6 +7,17 @@
     <title>Interview Assistent - Landki</title>
     <!-- ChatKit script to register custom element / hook internals -->
     <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async></script>
+    <style>
+      /* Force dark theme on ChatKit */
+      openai-chatkit { 
+        color-scheme: dark;
+        --chatkit-theme: dark;
+      }
+      openai-chatkit::part(container) {
+        background: #0f172a !important;
+        color: #e2e8f0 !important;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
