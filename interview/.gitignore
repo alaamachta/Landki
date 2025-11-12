@@ -1,5 +1,68 @@
+# -------------------------------
+# 📦 Node / Frontend
+# -------------------------------
 node_modules/
 dist/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# -------------------------------
+# ⚙️ Environment & Secrets
+# -------------------------------
 .env*
 !.env.example
 
+# -------------------------------
+# 🧠 Python / Backend Cache
+# -------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.sqlite3
+*.db
+
+# -------------------------------
+# 🧾 Build / Temp / Backup
+# -------------------------------
+_backup*/
+_logs*/
+_unused*/
+_backups/
+_logs/
+_unused/
+
+# -------------------------------
+# 🖥️ Project-specific folders
+# -------------------------------
+/var/www/landki/website/
+/var/www/landki/interview/__pycache__/
+/var/www/landki/interview/_backups/
+/var/www/landki/interview/_logs/
+/var/www/landki/interview/_unused/
+/var/www/landki/interview/dashboard/
+/var/www/landki/interview/Docs/
+
+# -------------------------------
+# 🧰 System files
+# -------------------------------
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.bak
+*.tmp
+*~
+
+# -------------------------------
+# 🧪 Testing / Artifacts
+# -------------------------------
+coverage/
+*.coverage
+*.pytest_cache/
+*.tox/
+*.nox/
+*.benchmarks/

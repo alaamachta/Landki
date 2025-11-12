@@ -1,1 +1,0 @@
-{"type": "public_feedback", "timestamp": "2025-11-12T01:08:14.550807Z", "session_id": "demo", "user_question": "Test Frage", "assistant_reply": "Test Antwort", "category": "out_of_scope", "comment": "CLI Test", "user_agent": "curl/7.81.0", "ip": "127.0.0.1"}
